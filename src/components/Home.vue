@@ -3,38 +3,66 @@
 		<div class="header">
 			<h2>All Lists</h2>
 			<div>
-				<button class="btn primary-btn flex-align-center">
+				<button class="btn primary-btn flex-align-center" @click="showModal = true">
 					<img src="icons/plus.svg" class="add-icon svg-white"> New List 
 				</button>
 			</div>
 		</div>
 
+		<h3 class="no-lists" v-if="! lists.length">No lists yet</h3>
+
 		<div class="lists">
-			<list-summary></list-summary>
-			<list-summary></list-summary>
-			<list-summary></list-summary>
-			<list-summary></list-summary>
-			<list-summary></list-summary>
+			<list-summary v-for="list in lists" :key="list.id" :data="list" @displayList="$emit('togglePage')"></list-summary>
 		</div>
 
-		<div class="modal">
-			<div class="modal-box">
-				<img src="icons/cancel.svg" class="close-icon svg-black">
-				<label for="list">List Name</label>
-				<input type="text" id="list" placeholder="e.g. My extreme, never-completed, long list">
-				<button class="btn primary-btn">Add List</button>
-			</div>
+		<div class="modal" :class="{ show: showModal }" @click="hideModal">
+			<form @submit.prevent="addList">
+				<div class="modal-box">
+					<img src="icons/cancel.svg" class="close-icon svg-black" @click="hideModal">
+					<label for="list">List Name</label>
+					<input type="text" id="list" placeholder="e.g. My extreme, never-completed, long list" 
+							v-model="listName">
+					<p class="error" v-text="emptyNameError"></p>
+					<button class="btn primary-btn">Add List</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </template>
 
 <script>
-	import ListSummary from './ListSummary.vue';
+	import ListSummary from './ListSummary';
+	import List from '../List';
 
 	export default {
-		components: {
-			ListSummary
-		}
+		components: { ListSummary },
+		emits: ['togglePage'],
+		data() {
+			return {
+				showModal: false,
+				lists: window.lists,
+				listName: '',
+				emptyNameError: '',
+				listObj: new List
+			}
+		},
+
+		methods: {
+			hideModal(e) {
+				if (e.target.classList.contains('modal') || e.target.classList.contains('close-icon'))
+					this.showModal = false; 
+			},
+			addList() {
+				if (this.listName != '') {
+					this.listObj.add(this.listName);
+					this.listName = '';
+					this.showModal = false; 
+					this.emptyNameError = '';
+				} else {
+					this.emptyNameError = 'Enter list name.';
+				}
+			}
+		},
 	}
 </script>
 
@@ -42,6 +70,12 @@
 	.header .btn .add-icon {
 		width: 13px;
 		margin-right: 9px;
+	}
+
+	.no-lists {
+		text-align: center;
+		font-size: 1.7rem;
+		color: #888;
 	}
 
 	.lists {
@@ -73,6 +107,11 @@
 		height: 100% !important;
 	}
 
+	.modal form {
+		width: 37%;
+		min-width: 400px;
+	}
+
 	.modal .modal-box {
 		background: var(--white);
 		padding: 29px;
@@ -81,8 +120,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-		width: 37%;
-		min-width: 400px;
 		margin: auto;
 		margin-top: 50px;
 		position: relative;
@@ -105,6 +142,12 @@
 		font-size: .9rem;
 		color: var(--text-color);
 	} 
+
+	.modal .error {
+		color: var(--danger-color);
+		font-size: .9rem;
+		margin: 0;
+	}
 
 	.modal .btn {
 		width: 100px;

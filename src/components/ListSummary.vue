@@ -1,14 +1,22 @@
 <template>
-	<div class="list-summary">
-		<h3>List Name</h3>
-		<p>Modified 3 days ago</p>
-		<p>3 Tasks  1 Done  2 Open</p>
+	<div class="list-summary" @click="$emit('displayList')">
+		<h3>{{ data.name }}</h3>
+		<p>Modified {{ getDate() }}</p>
+		<p>{{ data.numOfTasks }} Tasks &nbsp; {{ data.open }} Open &nbsp; {{ data.done }} Done</p>
 	</div>
 </template>
 
 <script>
-	export default {
+	import moment from 'moment'
 
+	export default {
+		emits: ['displayList'],
+		props: ['data'],
+		methods: {
+			getDate() {
+				return moment(this.data.modified).fromNow()
+			}
+		}
 	}
 </script>
 

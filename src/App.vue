@@ -1,19 +1,41 @@
 <template>
   <div>
-    <home></home>
-    <!-- <list></list> -->
+    <home v-if="showHome" @togglePage="togglePage"></home>
+    <list v-else></list>
   </div>
 </template>
 
 <script>
-import Home from './components/Home.vue';
-// import List from './components/List.vue';
+import Home from './components/Home';
+import List from './components/List';
 
 export default {
   name: 'App',
   components: {
-    Home
-    // List
+    Home,
+    List
+  },
+  data() { 
+    return {
+      showHome: true
+    }
+  },
+
+  methods: {
+    togglePage() {
+      this.showHome = !this.showHome;
+    }
+  },
+
+  created() {
+    window.storage = window.localStorage;
+
+    if (! (window.lists = JSON.parse(window.storage.getItem('todoLists')))) {
+      window.storage.setItem('todoLists', JSON.stringify([]));
+      window.lists = JSON.parse(window.storage.getItem('todoLists'));
+    }
+
+    window.listsLength = window.lists.length;
   }
 }
 </script>
