@@ -16,7 +16,8 @@
 			<div class="actions flex-align-center">
 				<img src="icons/edit.svg" class="edit-icon svg-primary" title="Rename List"
 					@click="renaming = true">
-				<img src="icons/delete.svg" class="svg-danger" title="Delete List">
+				<img src="icons/delete.svg" class="svg-danger" title="Delete List" 
+					@click="showModal = true">
 			</div>
 		</div>
 
@@ -29,23 +30,37 @@
 			<task></task>
 			<task></task>
 		</div>
+
+		<modal :show-modal-prop="showModal" @click="hideModal">
+			<form @submit.prevent="deleteList">
+				<div class="modal-box">
+					<img src="icons/cancel.svg" class="close-icon svg-black" @click="hideModal">
+					<h3>Are you sure you want to delete the list?</h3>
+					<center><button class="btn danger-btn">Delete</button></center>	
+				</div>
+			</form>
+		</modal>
 	</div>
 </template>
 
 <script>
 	import Task from './Task';
+	import Modal from './Modal';
 	import List from '../List';
 
 	export default {
-		components: { Task },
+		components: { Task, Modal },
 		props: ['listData'],
+		emits: ['togglePage'],
+
 		data() {
 			return {
 				renaming: false,
 				emptyNameError: '',
 				data: this.listData,
 				newName: this.listData.name,
-				listObj: new List
+				listObj: new List,
+				showModal: false
 			}
 		},
 
@@ -63,6 +78,14 @@
 				this.renaming = false;
 				this.newName = this.data.name;
 				this.emptyNameError = '';
+			},
+			deleteList() {
+				this.listObj.delete(this.data.id);
+				this.$emit('togglePage');
+			},
+			hideModal(e) {
+				if (e.target.classList.contains('modal') || e.target.classList.contains('close-icon'))
+					this.showModal = false; 
 			}
 		},
 

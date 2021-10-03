@@ -16,10 +16,19 @@ export default class List {
 	}
 
 	rename(id, newName) {
-		let listIndex = window.lists.findIndex(list => list.id === id);
-		window.lists[listIndex].name = newName;
-		
+		window.lists[this.getIndex(id)].name = newName;
+
 		this.updateLocalStorage();
+	}
+
+	delete(id) {
+		window.lists.splice(this.getIndex(id), 1);
+
+		this.updateLocalStorage();
+	}
+
+	getIndex(id) {
+		return window.lists.findIndex(list => list.id === id);
 	}
 
 	updateLocalStorage() {

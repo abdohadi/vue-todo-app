@@ -15,7 +15,7 @@
 			<list-summary v-for="list in lists" :key="list.id" :data="list" @display-list="$emit('togglePage', $event)"></list-summary>
 		</div>
 
-		<div class="modal" :class="{ show: showModal }" @click="hideModal">
+		<modal :show-modal-prop="showModal" @click="hideModal">
 			<form @submit.prevent="addList">
 				<div class="modal-box">
 					<img src="icons/cancel.svg" class="close-icon svg-black" @click="hideModal">
@@ -26,16 +26,17 @@
 					<button class="btn primary-btn">Add List</button>
 				</div>
 			</form>
-		</div>
+		</modal>
 	</div>
 </template>
 
 <script>
 	import ListSummary from './ListSummary';
+	import Modal from './Modal';
 	import List from '../List';
 
 	export default {
-		components: { ListSummary },
+		components: { ListSummary, Modal },
 		emits: ['togglePage'],
 		data() {
 			return {
@@ -83,68 +84,5 @@
 		justify-content: flex-start;
 		flex-wrap: wrap;
 		gap: 40px;
-	}
-
-	.modal {
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: -2000px;
-		bottom: 0;
-		background: #494949db;
-		display: flex;
-		justify-content: center;
-		align-items: flex-start;
-		width: 50%;
-		height: 50%;
-		margin: auto;
-		opacity: 0;
-	}
-	.modal.show {
-		top: 0;
-		opacity: 1 !important;
-		width: 100% !important;
-		height: 100% !important;
-	}
-
-	.modal form {
-		width: 37%;
-		min-width: 400px;
-	}
-
-	.modal .modal-box {
-		background: var(--white);
-		padding: 29px;
-		border: 1px solid var(--border-color);
-		border-radius: 5px;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		margin: auto;
-		margin-top: 50px;
-		position: relative;
-	}
-	.modal.show .modal-box {
-		margin-top: 150px;
-	}
-
-	.modal-box .close-icon {
-		position: absolute;
-		top: 14px;
-		right: 14px;
-		font-size: 10px;
-		width: 12px;
-		cursor: pointer;
-	}
-
-	.modal input {
-		padding: 13px 20px;
-		font-size: .9rem;
-		color: var(--text-color);
-	} 
-
-	.modal .btn {
-		width: 100px;
-		margin-left: auto;
 	}
 </style>
