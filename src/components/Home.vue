@@ -12,7 +12,7 @@
 		<h3 class="no-lists" v-if="! lists.length">No lists yet</h3>
 
 		<div class="lists">
-			<list-summary v-for="list in lists" :key="list.id" :data="list" @displayList="$emit('togglePage')"></list-summary>
+			<list-summary v-for="list in lists" :key="list.id" :data="list" @display-list="$emit('togglePage', $event)"></list-summary>
 		</div>
 
 		<div class="modal" :class="{ show: showModal }" @click="hideModal">
@@ -59,7 +59,7 @@
 					this.showModal = false; 
 					this.emptyNameError = '';
 				} else {
-					this.emptyNameError = 'Enter list name.';
+					this.emptyNameError = 'The list name cannot be empty';
 				}
 			}
 		},
@@ -142,12 +142,6 @@
 		font-size: .9rem;
 		color: var(--text-color);
 	} 
-
-	.modal .error {
-		color: var(--danger-color);
-		font-size: .9rem;
-		margin: 0;
-	}
 
 	.modal .btn {
 		width: 100px;

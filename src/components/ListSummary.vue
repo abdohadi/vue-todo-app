@@ -1,5 +1,5 @@
 <template>
-	<div class="list-summary" @click="$emit('displayList')">
+	<div class="list-summary" @click="$emit('displayList', data)">
 		<h3>{{ data.name }}</h3>
 		<p>Modified {{ getDate() }}</p>
 		<p>{{ data.numOfTasks }} Tasks &nbsp; {{ data.open }} Open &nbsp; {{ data.done }} Done</p>
@@ -7,14 +7,14 @@
 </template>
 
 <script>
-	import moment from 'moment'
+	import moment from 'moment';
 
 	export default {
 		emits: ['displayList'],
 		props: ['data'],
 		methods: {
 			getDate() {
-				return moment(this.data.modified).fromNow()
+				return moment(this.data.modified).fromNow();
 			}
 		}
 	}

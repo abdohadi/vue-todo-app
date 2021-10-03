@@ -12,6 +12,17 @@ export default class List {
 			"tasks": []
 		});
 
+		this.updateLocalStorage();
+	}
+
+	rename(id, newName) {
+		let listIndex = window.lists.findIndex(list => list.id === id);
+		window.lists[listIndex].name = newName;
+		
+		this.updateLocalStorage();
+	}
+
+	updateLocalStorage() {
 		window.storage.setItem('todoLists', JSON.stringify(window.lists));
 	}
 }

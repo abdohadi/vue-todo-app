@@ -1,7 +1,7 @@
 <template>
   <div>
-    <home v-if="showHome" @togglePage="togglePage"></home>
-    <list v-else></list>
+    <home v-if="showHome" @toggle-page="togglePage($event)"></home>
+    <list v-else @toggle-page="togglePage" :list-data="viewedList"></list>
   </div>
 </template>
 
@@ -17,13 +17,17 @@ export default {
   },
   data() { 
     return {
-      showHome: true
+      showHome: true,
+      viewedList: []
     }
   },
 
   methods: {
-    togglePage() {
+    togglePage(data = null) {
       this.showHome = !this.showHome;
+
+      if (data)
+        this.viewedList = data;
     }
   },
 

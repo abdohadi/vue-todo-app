@@ -70,10 +70,14 @@ input[type="checkbox"] {
 	font-size: 1.1rem !important;
 }
 
+.btn-sm {
+	font-size: .9rem;
+	padding: 5px 10px;
+}
+
 .primary-btn {
 	background: var(--primary-color);
 }
-
 .primary-btn:hover {
 	background: var(--primary-color-darken);
 }
@@ -81,9 +85,17 @@ input[type="checkbox"] {
 .danger-btn {
 	background: var(--danger-color);
 }
-
 .danger-btn:hover {
 	background: var(--danger-color-darken);
+}
+
+.white-btn {
+	color: var(--text-color);
+	background: var(--white);
+	border: 1px solid #ccc;
+}
+.white-btn:hover {
+	background: var(--border-color);
 }
 
 .flex-align-center {
@@ -95,6 +107,12 @@ input[type="checkbox"] {
 	display: flex;
 	flex-direction: column;
 	gap: 7px;
+}
+
+.error {
+	color: var(--danger-color);
+	font-size: .9rem;
+	margin: 0;
 }
 
 .svg-primary {
