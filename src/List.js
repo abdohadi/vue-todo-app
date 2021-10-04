@@ -6,8 +6,8 @@ export default class List {
 			"id": ++window.listsLength,
 			"name": name,
 			"modified": moment().format('YYYY-M-DD HH:mm:ss'),
-			"numOfTasks": 1,
-			"open": 1,
+			"numOfTasks": 0,
+			"open": 0,
 			"done": 0,
 			"tasks": []
 		});
@@ -25,6 +25,27 @@ export default class List {
 		window.lists.splice(this.getIndex(id), 1);
 
 		this.updateLocalStorage();
+	}
+
+	addTask(listId, taskName) {
+		let targetList = window.lists[this.getIndex(listId)];
+		targetList.tasks.unshift({
+			"id": this.getFirstTaskId(listId) + 1,
+			"name": taskName,
+			"notes": '',
+			"dueDate": '',
+			"priority": ''
+		});
+
+		targetList.numOfTasks++;
+		targetList.open++;
+
+		this.updateLocalStorage();
+	}
+
+	getFirstTaskId(listId) {
+		let tasks = window.lists[this.getIndex(listId)].tasks;
+		return tasks.length > 0 ? tasks[0].id : 0;
 	}
 
 	getIndex(id) {

@@ -115,6 +115,10 @@ input[type="checkbox"] {
 	margin: 0;
 }
 
+.center {
+	text-align: center;
+}
+
 .svg-primary {
 	filter: invert(57%) sepia(78%) saturate(333%) hue-rotate(101deg) brightness(95%) contrast(84%);
 }

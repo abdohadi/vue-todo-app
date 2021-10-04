@@ -21,14 +21,17 @@
 			</div>
 		</div>
 
-		<div class="add-task flex-align-center">
-			<img src="icons/plus.svg" class="add-icon svg-black" title="Add List">
-			<input type="text" placeholder="Add Task">
+		<div class="add-task">
+			<form class="flex-align-center" @submit.prevent="addTask">
+				<button type="submit">
+					<img src="icons/plus.svg" class="add-icon svg-black" title="Add List">
+				</button>
+				<input type="text" id="addTaskInput" placeholder="Add Task" v-model="newTaskName">
+			</form>
 		</div>
 		
 		<div class="tasks">
-			<task></task>
-			<task></task>
+			<task v-for="task in tasks" :key="task.id" :task-data="task"></task>
 		</div>
 
 		<modal :show-modal-prop="showModal" @click="hideModal">
@@ -36,7 +39,7 @@
 				<div class="modal-box">
 					<img src="icons/cancel.svg" class="close-icon svg-black" @click="hideModal">
 					<h3>Are you sure you want to delete the list?</h3>
-					<center><button class="btn danger-btn">Delete</button></center>	
+					<div class="center"><button class="btn danger-btn">Delete</button></div>	
 				</div>
 			</form>
 		</modal>
@@ -59,8 +62,19 @@
 				emptyNameError: '',
 				data: this.listData,
 				newName: this.listData.name,
+				tasks: this.listData.tasks,
 				listObj: new List,
+				newTaskName: '',
 				showModal: false
+			}
+		},
+
+		watch: {
+			renaming(newVal) {
+				setTimeout(() => {
+					if (newVal)
+						document.getElementById("editNameInput").focus();
+				}, 100);
 			}
 		},
 
@@ -74,27 +88,30 @@
 					this.emptyNameError = 'The list name cannot be empty';
 				}
 			},
+
 			cancelRenaming() {
 				this.renaming = false;
 				this.newName = this.data.name;
 				this.emptyNameError = '';
 			},
+			
 			deleteList() {
 				this.listObj.delete(this.data.id);
 				this.$emit('togglePage');
 			},
+			
 			hideModal(e) {
 				if (e.target.classList.contains('modal') || e.target.classList.contains('close-icon'))
 					this.showModal = false; 
-			}
-		},
+			},
 
-		watch: {
-			renaming(newVal) {
-				setTimeout(() => {
-					if (newVal)
-						document.getElementById("editNameInput").focus();
-				}, 100);
+			addTask() {
+				if (this.newTaskName != '') {
+					this.listObj.addTask(this.data.id, this.newTaskName);
+					this.newTaskName = '';
+				}
+				
+				document.getElementById("addTaskInput").focus();
 			}
 		}
 	}
@@ -151,6 +168,17 @@
 		border: 1px solid var(--border-color);
 		margin-bottom: 25px;
 		border-radius: 10px;
+		cursor: pointer;
+	}
+
+	.add-task form {
+		width: 100%;
+	}
+
+	.add-task form button[type="submit"] {
+		display: flex;
+		padding: 0;
+		border: none;
 		cursor: pointer;
 	}
 

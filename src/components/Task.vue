@@ -3,7 +3,7 @@
 		<div class="task-top flex-align-center">
 			<div class="task-left flex-align-center">
 				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
-				<input type="text" data-task-id="1" value="Complete vue todo app">
+				<input type="text" data-task-id="1" :value="data.name">
 			</div>
 
 			<div class="task-right">
@@ -12,34 +12,34 @@
 				</label>
 				<input type="checkbox" name="done" id="done-checkbox" data-task-id="1">
 				<img src="icons/cancel.svg" class="svg-danger delete-task" title="Delete Task">
-				<div class="triangle-container" title="Edit Detail">
+				<div class="triangle-container" title="Edit Detail" @click="toggleTaskDetails">
 					<span class="triangle"></span>
 				</div>
 			</div>
 		</div>
 
-		<div class="task-down">
+		<div class="task-down" :class="{ show: showTaskDetails }">
 			<div class="task-down-inner flex-align-center">
 				<div class="task-detail-left">
 					<div class="input-group">
 						<label>Notes</label>
-						<textarea rows="5" cols="60" placeholder="Have any notes?"></textarea>
+						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="data.notes"></textarea>
 					</div>
 				</div>
 
 				<div class="task-detail-right">
 					<div class="input-group">
 						<label>Due Date</label>
-						<input type="date" name="due-date">
+						<input type="date" name="due-date" v-model="data.dueDate">
 					</div>
 
 					<div class="input-group">
 						<label>Priority</label>
 						<select>
-							<option>None</option>
-							<option>High</option>
-							<option>Medium</option>
-							<option>Low</option>
+							<option :selected="data.priority == ''">None</option>
+							<option :selected="data.priority == 'high'">High</option>
+							<option :selected="data.priority == 'medium'">Medium</option>
+							<option :selected="data.priority == 'low'">Low</option>
 						</select>
 					</div>
 				</div>
@@ -50,7 +50,20 @@
 
 <script>
 	export default {
+		props: ['taskData'],
 
+		data() {
+			return {
+				showTaskDetails: false,
+				data: this.taskData
+			}
+		},
+
+		methods: {
+			toggleTaskDetails() {
+				this.showTaskDetails = !this.showTaskDetails;
+			}
+		}
 	}
 </script>
 
@@ -159,8 +172,11 @@
 	}
 
 	.task .task-down {
-		/*max-height: 0;*/
+		max-height: 0;
 		overflow: hidden;
+	}
+	.task .task-down.show {
+		max-height: 300px;
 	}
 
 	.task .task-down-inner {
