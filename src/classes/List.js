@@ -15,7 +15,7 @@ export default class List {
 
 	delete() {
 		const listIndex = window.storage.lists.findIndex(list => list.id === this.data.id);
-		
+
 		window.storage.lists.splice(listIndex, 1);
 
 		window.storage.updateLocalStorage();
@@ -29,7 +29,8 @@ export default class List {
 			"name": taskName,
 			"notes": '',
 			"dueDate": '',
-			"priority": ''
+			"priority": '',
+			'done': false
 		});
 
 		this.data.numOfTasks++;
