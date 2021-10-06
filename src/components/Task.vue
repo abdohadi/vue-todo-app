@@ -1,6 +1,6 @@
 <template>
 	<div class="task">
-		<div class="task-top flex-align-center toggle-task-details" @click="toggleTaskDetails">
+		<div class="task-top flex-align-center toggle-task-details" @click="toggleDetails">
 			<div class="task-left flex-align-center">
 				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
 				<input type="text" v-model="name" @input="update('name')">
@@ -11,15 +11,16 @@
 					<span class="check-mark">&#10003;</span>
 				</label>
 				<input type="checkbox" name="done" id="done-checkbox" data-task-id="1">
-				<img src="icons/cancel.svg" class="svg-danger delete-task" title="Delete Task">
+				<img src="icons/cancel.svg" class="svg-danger remove-task" title="Remove Task"
+					@click="remove">
 				<div class="triangle-container toggle-task-details" title="Edit Detail" 
-					:class="{ up: showTaskDetails }" @click="toggleTaskDetails">
-					<span class="triangle toggle-task-details" @click="toggleTaskDetails"></span>
+					:class="{ up: showDetails }" @click.stop="toggleDetails">
+					<span class="triangle toggle-task-details" @click.stop="toggleDetails"></span>
 				</div>
 			</div>
 		</div>
 
-		<div class="task-down" :class="{ show: showTaskDetails }">
+		<div class="task-down" :class="{ show: showDetails }">
 			<div class="task-down-inner flex-align-center">
 				<div class="task-detail-left">
 					<div class="input-group">
@@ -59,7 +60,7 @@
 
 		data() {
 			return {
-				showTaskDetails: false,
+				showDetails: false,
 				task: new Task(this.data, this.list),
 				name: '',
 				notes: '',
@@ -69,9 +70,9 @@
 		},
 
 		methods: {
-			toggleTaskDetails(e) {
+			toggleDetails(e) {
 				if (e.target.classList.contains('toggle-task-details'))
-					this.showTaskDetails = !this.showTaskDetails;
+					this.showDetails = !this.showDetails;
 			},
 
 			update(key, e) {
@@ -80,6 +81,10 @@
 				if (key != 'name' || (key == 'name' && this[key] != '')) {
 					this[key] = this.task.update(key, val);
 				}
+			},
+
+			remove() {
+				this.task.remove();
 			}
 		},
 
@@ -119,13 +124,13 @@
 		width: 400px;
 	}
 
+	.task .task-left img {
+		cursor: grab;
+	}
+
 	.task .task-right {
 		display: flex;
 		align-items: center;
-	}
-
-	.task .task-right img {
-		cursor: grab;
 	}
 
 	.task .task-right .custom-checkbox {
@@ -166,7 +171,7 @@
 		display: none;
 	}
 
-	.task .task-right .delete-task {
+	.task .task-right .remove-task {
 		width: 16px;
 		cursor: pointer;
 	}
@@ -180,14 +185,14 @@
 		border: 1px solid transparent;
 		margin-left: 15px;
 	}
+	.triangle-container:hover {
+		border: 1px solid var(--text-color);
+	}
 	.triangle-container.up {
 		-webkit-transform: rotate(180deg);
 		-moz-transform: rotate(180deg);
 		-o-transform: rotate(180deg);
 		transform: rotate(180deg);
-	}
-	.triangle-container:hover {
-		border: 1px solid var(--text-color);
 	}
 
 	.triangle {

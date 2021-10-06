@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default class List {
 	constructor(data) {
 		this.data = data;
@@ -36,6 +38,12 @@ export default class List {
 		this.data.numOfTasks++;
 		this.data.open++;
 
+		this.updateModifiedDate();
+
 		window.storage.updateLocalStorage();
+	}
+
+	updateModifiedDate() {
+		this.data.modified = moment().format('YYYY-M-DD HH:mm:ss');
 	}
 }

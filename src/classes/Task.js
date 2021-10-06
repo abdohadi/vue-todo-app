@@ -11,14 +11,23 @@ export default class Task {
 	update(key, val) {
 		this.data[key] = val;
 
+		this.list.updateModifiedDate();
+
 		window.storage.updateLocalStorage();
 
 		return this.data[key];
 	}
 
-	// delete() {
-	// 	this.list.splice(this.getIndex(), 1);
+	remove() {
+		const taskIndex = this.list.get('tasks').findIndex(task => task.id === this.data.id);
 
-	// 	window.storage.updateLocalStorage();
-	// }
+		const status = this.data.done ? 'done' : 'open';
+		this.list.data[status]--;
+		this.list.data.numOfTasks--;
+		this.list.get('tasks').splice(taskIndex, 1);
+
+		this.list.updateModifiedDate();
+
+		window.storage.updateLocalStorage();	
+	}
 }
