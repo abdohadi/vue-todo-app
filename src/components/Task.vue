@@ -3,14 +3,14 @@
 		<div class="task-top flex-align-center toggle-task-details" @click="toggleDetails">
 			<div class="task-left flex-align-center">
 				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
-				<input type="text" v-model="name" @input="update('name')">
+				<input type="text" :class="{ done: done }" v-model="name" @input="update('name')">
 			</div>
 
 			<div class="task-right">
-				<label class="custom-checkbox" for="done-checkbox" title="Done">
-					<span class="check-mark">&#10003;</span>
+				<label class="custom-checkbox" for="done-checkbox" title="Done" @click="update('done', )">
+					<span class="check-mark" :class="{ show: done }">&#10003;</span>
 				</label>
-				<input type="checkbox" name="done" id="done-checkbox" data-task-id="1">
+				<input type="checkbox" id="done-checkbox">
 				<img src="icons/cancel.svg" class="svg-danger remove-task" title="Remove Task"
 					@click="remove">
 				<div class="triangle-container toggle-task-details" title="Edit Detail" 
@@ -40,10 +40,10 @@
 					<div class="input-group">
 						<label>Priority</label>
 						<select @change="update('priority', $event)">
-							<option value="" :selected="task.get('priority') == ''">None</option>
-							<option value="high" :selected="task.get('priority') == 'high'">High</option>
-							<option value="medium" :selected="task.get('priority') == 'medium'">Medium</option>
-							<option value="low" :selected="task.get('priority') == 'low'">Low</option>
+							<option value="" :selected="priority == ''">None</option>
+							<option value="high" :selected="priority == 'high'">High</option>
+							<option value="medium" :selected="priority == 'medium'">Medium</option>
+							<option value="low" :selected="priority == 'low'">Low</option>
 						</select>
 					</div>
 				</div>
@@ -65,7 +65,8 @@
 				name: '',
 				notes: '',
 				dueDate: '',
-				priority: ''
+				priority: '',
+				done: false
 			}
 		},
 
@@ -76,7 +77,11 @@
 			},
 
 			update(key, e) {
-				let val = (key == 'priority') ? e.target.value : this[key];	
+				let val = (key == 'priority') ? 
+							e.target.value : 
+							((key == 'done') ? 
+								!this.done : 
+								this[key]);	
 
 				if (key != 'name' || (key == 'name' && this[key] != '')) {
 					this[key] = this.task.update(key, val);
@@ -93,6 +98,7 @@
 			this.notes = this.task.get('notes');
 			this.dueDate = this.task.get('dueDate');
 			this.priority = this.task.get('priority');
+			this.done = this.task.get('done');
 		}
 	}
 </script>
@@ -122,6 +128,9 @@
 		font-size: 1.1rem;
 		color: var(--text-color);
 		width: 400px;
+	}
+	.task .task-left input.done {
+		text-decoration: line-through;
 	}
 
 	.task .task-left img {

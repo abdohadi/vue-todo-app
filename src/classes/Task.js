@@ -11,6 +11,10 @@ export default class Task {
 	update(key, val) {
 		this.data[key] = val;
 
+		if (key == 'done') {
+			this.list.updateNumOfTasks(val);
+		}
+
 		this.list.updateModifiedDate();
 
 		window.storage.updateLocalStorage();

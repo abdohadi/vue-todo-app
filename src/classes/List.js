@@ -43,6 +43,16 @@ export default class List {
 		window.storage.updateLocalStorage();
 	}
 
+	updateNumOfTasks(val) {
+		if (val == true) {
+			this.data.done++;
+			this.data.open--;
+		} else {
+			this.data.done--;
+			this.data.open++;
+		}
+	}
+
 	updateModifiedDate() {
 		this.data.modified = moment().format('YYYY-M-DD HH:mm:ss');
 	}
