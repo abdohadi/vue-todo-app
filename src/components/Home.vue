@@ -12,16 +12,18 @@
 		<h3 class="no-lists" v-if="! lists.length">No lists yet</h3>
 
 		<div class="lists">
-			<list-summary v-for="list in lists" :key="list.id" :data="list" @display-list="$emit('togglePage', $event)"></list-summary>
+			<list-summary v-for="listData in lists" :key="listData.id" :data="listData" 
+						@display-list="$emit('togglePage', listData)">
+			</list-summary>
 		</div>
 
 		<modal :show-modal-prop="showModal" @click="hideModal">
 			<form @submit.prevent="addList">
 				<div class="modal-box">
-					<img src="icons/cancel.svg" class="close-icon svg-black" @click="hideModal">
-					<label for="list">List Name</label>
-					<input type="text" id="list" placeholder="e.g. My extreme, never-completed, long list" 
-							v-model="listName">
+					<img src="icons/cancel.svg" class="close-icon hide-modal svg-black" @click="hideModal">
+					<label for="listNameInput">List Name</label>
+					<input type="text" id="listNameInput" placeholder="e.g. My extreme, never-completed, long list"
+							v-model="newListName">
 					<p class="error" v-text="emptyNameError"></p>
 					<button class="btn primary-btn">Add List</button>
 				</div>
@@ -33,7 +35,6 @@
 <script>
 	import ListSummary from './ListSummary';
 	import Modal from './Modal';
-	import List from '../List';
 
 	export default {
 		components: { ListSummary, Modal },
@@ -41,29 +42,37 @@
 		data() {
 			return {
 				showModal: false,
-				lists: window.lists,
-				listName: '',
+				lists: window.storage.lists,
+				newListName: '',
 				emptyNameError: '',
-				listObj: new List
+			}
+		},
+
+		watch: {
+			showModal(newVal) {
+				if (newVal)
+					document.getElementById('listNameInput').focus();
 			}
 		},
 
 		methods: {
 			hideModal(e) {
-				if (e.target.classList.contains('modal') || e.target.classList.contains('close-icon'))
+				if (e.target.classList.contains('hide-modal')) {
 					this.showModal = false; 
+					this.newListName = '';
+				}
 			},
 			addList() {
-				if (this.listName != '') {
-					this.listObj.add(this.listName);
-					this.listName = '';
+				if (this.newListName != '') {
+					window.storage.addList(this.newListName);
+					this.newListName = '';
 					this.showModal = false; 
 					this.emptyNameError = '';
 				} else {
 					this.emptyNameError = 'The list name cannot be empty';
 				}
 			}
-		},
+		}
 	}
 </script>
 

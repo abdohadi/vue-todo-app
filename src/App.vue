@@ -1,13 +1,14 @@
 <template>
   <div>
     <home v-if="showHome" @toggle-page="togglePage($event)"></home>
-    <list v-else @toggle-page="togglePage" :list-data="viewedList"></list>
+    <list v-else @toggle-page="togglePage" :data="listData"></list>
   </div>
 </template>
 
 <script>
 import Home from './components/Home';
 import List from './components/List';
+import Storage from './classes/Storage';
 
 export default {
   name: 'App',
@@ -18,28 +19,21 @@ export default {
   data() { 
     return {
       showHome: true,
-      viewedList: []
+      listData: {}
     }
   },
 
   methods: {
-    togglePage(data = null) {
+    togglePage(listData = null) {
       this.showHome = !this.showHome;
 
-      if (data)
-        this.viewedList = data;
+      if (listData)
+        this.listData = listData;
     }
   },
 
   created() {
-    window.storage = window.localStorage;
-
-    if (! (window.lists = JSON.parse(window.storage.getItem('todoLists')))) {
-      window.storage.setItem('todoLists', JSON.stringify([]));
-      window.lists = JSON.parse(window.storage.getItem('todoLists'));
-    }
-
-    window.listsLength = window.lists.length;
+    window.storage = new Storage;
   }
 }
 </script>

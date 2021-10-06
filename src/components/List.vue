@@ -5,12 +5,12 @@
 				<img src="icons/back.svg" class="back-icon svg-black" title="Back to lists"
 					@click="$emit('togglePage')">
 				<form v-if="renaming" @submit.prevent="renameList">
-					<input id="editNameInput" type="text" v-model="newName">
+					<input id="editNameInput" type="text" v-model="name">
 					<button type="submit" class="btn btn-sm primary-btn">Save</button>
 					<button class="btn btn-sm white-btn" @click="cancelRenaming">Cancel</button>
 					<p class="error" v-text="emptyNameError"></p>
 				</form>
-				<h2 v-else>{{ data.name }}</h2>
+				<h2 v-else>{{ list.get('name') }}</h2>
 			</div>
 
 			<div class="actions flex-align-center">
@@ -31,13 +31,13 @@
 		</div>
 		
 		<div class="tasks">
-			<task v-for="task in tasks" :key="task.id" :task-data="task"></task>
+			<task v-for="task in list.get('tasks')" :key="task.id" :data="task" :list="list"></task>
 		</div>
 
 		<modal :show-modal-prop="showModal" @click="hideModal">
 			<form @submit.prevent="deleteList">
 				<div class="modal-box">
-					<img src="icons/cancel.svg" class="close-icon svg-black" @click="hideModal">
+					<img src="icons/cancel.svg" class="close-icon hide-modal svg-black" @click="hideModal">
 					<h3>Are you sure you want to delete the list?</h3>
 					<div class="center"><button class="btn danger-btn">Delete</button></div>	
 				</div>
@@ -49,21 +49,19 @@
 <script>
 	import Task from './Task';
 	import Modal from './Modal';
-	import List from '../List';
+	import List from '../classes/List';
 
 	export default {
 		components: { Task, Modal },
-		props: ['listData'],
+		props: ['data'],
 		emits: ['togglePage'],
 
 		data() {
 			return {
 				renaming: false,
 				emptyNameError: '',
-				data: this.listData,
-				newName: this.listData.name,
-				tasks: this.listData.tasks,
-				listObj: new List,
+				name: '',
+				list: new List(this.data),
 				newTaskName: '',
 				showModal: false
 			}
@@ -80,8 +78,9 @@
 
 		methods: {
 			renameList() {
-				if (this.newName != '') {
-					this.listObj.rename(this.data.id, this.newName)
+				if (this.name != '') {
+					this.list.rename(this.name);
+					this.name = this.list.get('name');
 					this.renaming = false;
 					this.emptyNameError = '';
 				} else {
@@ -91,28 +90,32 @@
 
 			cancelRenaming() {
 				this.renaming = false;
-				this.newName = this.data.name;
+				this.name = this.list.get('name');
 				this.emptyNameError = '';
 			},
 			
 			deleteList() {
-				this.listObj.delete(this.data.id);
+				this.list.delete();
 				this.$emit('togglePage');
 			},
 			
 			hideModal(e) {
-				if (e.target.classList.contains('modal') || e.target.classList.contains('close-icon'))
+				if (e.target.classList.contains('hide-modal'))
 					this.showModal = false; 
 			},
 
 			addTask() {
 				if (this.newTaskName != '') {
-					this.listObj.addTask(this.data.id, this.newTaskName);
+					this.list.addTask(this.newTaskName);
 					this.newTaskName = '';
 				}
-				
+
 				document.getElementById("addTaskInput").focus();
 			}
+		},
+
+		created() {
+			this.name = this.list.get('name');
 		}
 	}
 </script>

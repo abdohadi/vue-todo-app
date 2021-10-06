@@ -1,9 +1,9 @@
 <template>
 	<div class="task">
-		<div class="task-top flex-align-center">
+		<div class="task-top flex-align-center toggle-task-details" @click="toggleTaskDetails">
 			<div class="task-left flex-align-center">
 				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
-				<input type="text" data-task-id="1" :value="data.name">
+				<input type="text" v-model="name">
 			</div>
 
 			<div class="task-right">
@@ -12,8 +12,9 @@
 				</label>
 				<input type="checkbox" name="done" id="done-checkbox" data-task-id="1">
 				<img src="icons/cancel.svg" class="svg-danger delete-task" title="Delete Task">
-				<div class="triangle-container" title="Edit Detail" @click="toggleTaskDetails">
-					<span class="triangle"></span>
+				<div class="triangle-container toggle-task-details" title="Edit Detail" 
+					:class="{ up: showTaskDetails }" @click="toggleTaskDetails">
+					<span class="triangle toggle-task-details" @click="toggleTaskDetails"></span>
 				</div>
 			</div>
 		</div>
@@ -23,23 +24,23 @@
 				<div class="task-detail-left">
 					<div class="input-group">
 						<label>Notes</label>
-						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="data.notes"></textarea>
+						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="notes"></textarea>
 					</div>
 				</div>
 
 				<div class="task-detail-right">
 					<div class="input-group">
 						<label>Due Date</label>
-						<input type="date" name="due-date" v-model="data.dueDate">
+						<input type="date" name="due-date" v-model="dueDate">
 					</div>
 
 					<div class="input-group">
 						<label>Priority</label>
 						<select>
-							<option :selected="data.priority == ''">None</option>
-							<option :selected="data.priority == 'high'">High</option>
-							<option :selected="data.priority == 'medium'">Medium</option>
-							<option :selected="data.priority == 'low'">Low</option>
+							<option :selected="task.get('priority') == ''">None</option>
+							<option :selected="task.get('priority') == 'high'">High</option>
+							<option :selected="task.get('priority') == 'medium'">Medium</option>
+							<option :selected="task.get('priority') == 'low'">Low</option>
 						</select>
 					</div>
 				</div>
@@ -49,20 +50,32 @@
 </template>
 
 <script>
+	import Task from '../classes/Task';
+
 	export default {
-		props: ['taskData'],
+		props: ['data', 'list'],
 
 		data() {
 			return {
 				showTaskDetails: false,
-				data: this.taskData
+				task: new Task(this.data, this.list),
+				name: '',
+				notes: '',
+				dueDate: ''
 			}
 		},
 
 		methods: {
-			toggleTaskDetails() {
-				this.showTaskDetails = !this.showTaskDetails;
+			toggleTaskDetails(e) {
+				if (e.target.classList.contains('toggle-task-details'))
+					this.showTaskDetails = !this.showTaskDetails;
 			}
+		},
+
+		created() {
+			this.name = this.task.get('name');
+			this.notes = this.task.get('notes');
+			this.dueDate = this.task.get('dueDate');
 		}
 	}
 </script>
@@ -154,6 +167,12 @@
 		border-radius: 3px;
 		border: 1px solid transparent;
 		margin-left: 15px;
+	}
+	.triangle-container.up {
+		-webkit-transform: rotate(180deg);
+		-moz-transform: rotate(180deg);
+		-o-transform: rotate(180deg);
+		transform: rotate(180deg);
 	}
 	.triangle-container:hover {
 		border: 1px solid var(--text-color);

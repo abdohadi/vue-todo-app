@@ -1,5 +1,5 @@
 <template>
-	<div class="list-summary" @click="$emit('displayList', data)">
+	<div class="list-summary" @click="$emit('displayList')">
 		<h3>{{ data.name }}</h3>
 		<p>Modified {{ getDate() }}</p>
 		<p>{{ data.numOfTasks }} Tasks &nbsp; {{ data.open }} Open &nbsp; {{ data.done }} Done</p>

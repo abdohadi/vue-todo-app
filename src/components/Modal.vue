@@ -1,5 +1,5 @@
 <template>
-	<div class="modal" :class="{ show: getShowModal }">
+	<div class="modal hide-modal" :class="{ show: getShowModal }">
 		<slot></slot>
 	</div>
 </template>
