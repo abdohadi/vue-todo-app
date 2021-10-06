@@ -3,7 +3,7 @@
 		<div class="task-top flex-align-center toggle-task-details" @click="toggleTaskDetails">
 			<div class="task-left flex-align-center">
 				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
-				<input type="text" v-model="name">
+				<input type="text" v-model="name" @input="update('name')">
 			</div>
 
 			<div class="task-right">
@@ -24,23 +24,25 @@
 				<div class="task-detail-left">
 					<div class="input-group">
 						<label>Notes</label>
-						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="notes"></textarea>
+						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="notes" 
+								@input="update('notes')">
+						</textarea>
 					</div>
 				</div>
 
 				<div class="task-detail-right">
 					<div class="input-group">
 						<label>Due Date</label>
-						<input type="date" name="due-date" v-model="dueDate">
+						<input type="date" name="due-date" v-model="dueDate" @change="update('dueDate')">
 					</div>
 
 					<div class="input-group">
 						<label>Priority</label>
-						<select>
-							<option :selected="task.get('priority') == ''">None</option>
-							<option :selected="task.get('priority') == 'high'">High</option>
-							<option :selected="task.get('priority') == 'medium'">Medium</option>
-							<option :selected="task.get('priority') == 'low'">Low</option>
+						<select @change="update('priority', $event)">
+							<option value="" :selected="task.get('priority') == ''">None</option>
+							<option value="high" :selected="task.get('priority') == 'high'">High</option>
+							<option value="medium" :selected="task.get('priority') == 'medium'">Medium</option>
+							<option value="low" :selected="task.get('priority') == 'low'">Low</option>
 						</select>
 					</div>
 				</div>
@@ -61,7 +63,8 @@
 				task: new Task(this.data, this.list),
 				name: '',
 				notes: '',
-				dueDate: ''
+				dueDate: '',
+				priority: ''
 			}
 		},
 
@@ -69,6 +72,14 @@
 			toggleTaskDetails(e) {
 				if (e.target.classList.contains('toggle-task-details'))
 					this.showTaskDetails = !this.showTaskDetails;
+			},
+
+			update(key, e) {
+				let val = (key == 'priority') ? e.target.value : this[key];	
+
+				if (key != 'name' || (key == 'name' && this[key] != '')) {
+					this[key] = this.task.update(key, val);
+				}
 			}
 		},
 
@@ -76,6 +87,7 @@
 			this.name = this.task.get('name');
 			this.notes = this.task.get('notes');
 			this.dueDate = this.task.get('dueDate');
+			this.priority = this.task.get('priority');
 		}
 	}
 </script>
