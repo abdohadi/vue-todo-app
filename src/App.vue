@@ -44,8 +44,8 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--text-color);
-    margin: 90px;
-    margin-top: 50px;
+    margin: 0 90px;
+    padding-bottom: 90px;
   }
 
   .header {

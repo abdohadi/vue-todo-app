@@ -1,15 +1,17 @@
 :root {
-	--body-background-color: #fafafa;
+	--body-background-color: #f3f3f3;
 	--primary-color: #42b983;
 	--primary-color-darken: #37ae78;
-	--danger-color: #de2626;;
+	--danger-color: #de2626;
+	--warning-color: rgb(245, 142, 10);
 	--danger-color-darken: #d52323;
 	--input-border-color: #d4d4d4;
-	--border-color: #eee;
+	--border-color: #d8d8d8;
 	--border-color-hover: #dbdbdb;
 	--shadow-color: #b6b4b4;
 	--white: #fff;
 	--text-color: #555;
+	--text-color-lighten: #888;
 }
 
 body {

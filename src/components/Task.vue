@@ -1,8 +1,8 @@
 <template>
-	<div class="task">
+	<div class="task" :class="priority">
 		<div class="task-top flex-align-center toggle-task-details" @click="toggleDetails">
 			<div class="task-left flex-align-center">
-				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
+				<img src="/icons/row.svg" class="svg-black" width="20">
 				<input type="text" :class="{ done: done }" v-model="name" @input="update('name')">
 			</div>
 
@@ -25,7 +25,7 @@
 				<div class="task-detail-left">
 					<div class="input-group">
 						<label>Notes</label>
-						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="notes" 
+						<textarea rows="5" placeholder="Have any notes?" v-model="notes" 
 								@input="update('notes')">
 						</textarea>
 					</div>
@@ -40,7 +40,7 @@
 					<div class="input-group">
 						<label>Priority</label>
 						<select @change="update('priority', $event)">
-							<option value="" :selected="priority == ''">None</option>
+							<option value="none" :selected="priority == 'none'">None</option>
 							<option value="high" :selected="priority == 'high'">High</option>
 							<option value="medium" :selected="priority == 'medium'">Medium</option>
 							<option value="low" :selected="priority == 'low'">Low</option>
@@ -77,11 +77,19 @@
 			},
 
 			update(key, e) {
-				let val = (key == 'priority') ? 
-							e.target.value : 
-							((key == 'done') ? 
-								!this.done : 
-								this[key]);	
+				let val = '';	
+				switch (key) {
+					case 'priority':
+						val = e.target.value;
+						this.showDetails = false;
+					break;
+					case 'done':
+						val = !this.done;
+					break;
+					default:
+						val = this[key];	
+					break;
+				}
 
 				if (key != 'name' || (key == 'name' && this[key] != '')) {
 					this[key] = this.task.update(key, val);
@@ -104,14 +112,23 @@
 </script>
 
 <style>
-	
 	.task {
+		max-width: 900px;
 		border: 1px solid var(--border-color);
-		padding: 15px 26px;
-		margin-bottom: 25px;
+		padding: 9px 26px;
+		margin: 10px auto;
 		background: var(--white);
 		border-radius: 10px;
 		cursor: pointer;
+	}
+	.task.high {
+		border-left: 5px solid var(--danger-color);
+	}
+	.task.medium {
+		border-left: 5px solid var(--warning-color);
+	}
+	.task.low {
+		border-left: 5px solid var(--primary-color);
 	}
 
 	.task .task-top, .task-down-inner {
@@ -120,6 +137,7 @@
 
 	.task .task-left {
 		gap: 25px;
+		width: 60%;
 	}
 
 	.task .task-left input {
@@ -127,10 +145,11 @@
 		padding: 10px;
 		font-size: 1.1rem;
 		color: var(--text-color);
-		width: 400px;
+		width: 100%;
 	}
 	.task .task-left input.done {
 		text-decoration: line-through;
+		color: var(--text-color-lighten);
 	}
 
 	.task .task-left img {
@@ -148,8 +167,8 @@
 		color: var(--white);
 		background: var(--white);
 		font-size: 1.4rem;
-		width: 22px;
-		height: 22px;
+		width: 21px;
+		height: 21px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -157,13 +176,10 @@
 		cursor: pointer;
 		box-shadow: 0px 0px 3px -2px var(--primary-color);
 	}
-	.task .task-right .custom-checkbox.checked {
-		border-width: 2px;
-	}
 
 	.task .task-right .custom-checkbox .check-mark {
-		font-weight: bold;
-		font-size: 1.3rem;
+		font-size: 1.2rem;
+		margin-top: 1px;
 		color: var(--primary-color);
 		display: none;
 	}
@@ -174,7 +190,6 @@
 	.task .task-right .custom-checkbox,
 	.task .task-right input[type="checkbox"] {
 		margin-right: 20px;
-		margin-top: 3.5px;
 	}
 	.task .task-right input[type="checkbox"] {
 		display: none;
@@ -228,15 +243,15 @@
 		padding-top: 15px;
 		margin-top: 15px;
 		border-top: 1px solid var(--border-color);
+		gap: 30px;
+	}
+
+	.task .task-down-inner .task-detail-left {
+		flex: 3;
 	}
 
 	.task .task-down-inner .task-detail-right {
-		width: 30%;
-	}
-
-	.task .task-down-inner .task-detail-right input,
-	.task .task-down-inner .task-detail-right select {
-		width: 60%;
+		flex: 1;
 	}
 
 	.task .task-down-inner input[type="date"]{

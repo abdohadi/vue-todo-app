@@ -24,14 +24,13 @@ export default class List {
 	}
 
 	addTask(taskName) {
-		let firstTaskId = this.data.tasks.length > 0 ? this.data.tasks[0].id : 0;
-
-		this.data.tasks.unshift({
-			"id": firstTaskId + 1,
+		this.data.tasks.push({
+			"id": this.getLargestTaskId() + 1,
 			"name": taskName,
 			"notes": '',
 			"dueDate": '',
-			"priority": '',
+			"priority": 'none',
+			"priorityNum": 0,
 			'done': false
 		});
 
@@ -41,6 +40,20 @@ export default class List {
 		this.updateModifiedDate();
 
 		window.storage.updateLocalStorage();
+	}
+
+	arrangeTasksBasedOnPriority() {
+		this.data.tasks.sort((t1, t2) => t1.priorityNum < t2.priorityNum);console.log(this.data.tasks);
+	}
+
+	getLargestTaskId() {
+		if (this.data.tasks.length > 0) {
+			return this.data.tasks.reduce((init, task) => {
+				return task.id > init ? task.id : init;
+			}, 0);
+		} 
+
+		return 0;
 	}
 
 	updateNumOfTasks(val) {

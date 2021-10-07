@@ -2,6 +2,7 @@ export default class Task {
 	constructor(data, list) {
 		this.data = data;
 		this.list = list;
+		this.priorityNums = { "none": 0, "low": 1, "medium": 2, "high": 3 };
 	}
 
 	get(key) {
@@ -13,6 +14,9 @@ export default class Task {
 
 		if (key == 'done') {
 			this.list.updateNumOfTasks(val);
+		} else if (key == 'priority') {
+			this.data['priorityNum'] = this.priorityNums[val];
+			this.list.arrangeTasksBasedOnPriority()
 		}
 
 		this.list.updateModifiedDate();

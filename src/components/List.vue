@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="list">
 		<div class="header">
 			<div class="header-left flex-align-center">
 				<img src="icons/back.svg" class="back-icon svg-black" title="Back to lists"
@@ -20,6 +20,10 @@
 					@click="showModal = true">
 			</div>
 		</div>
+		
+		<div class="tasks">
+			<task v-for="task in list.get('tasks')" :key="task.id" :data="task" :list="list"></task>
+		</div>
 
 		<div class="add-task">
 			<form class="flex-align-center" @submit.prevent="addTask">
@@ -28,10 +32,6 @@
 				</button>
 				<input type="text" id="addTaskInput" placeholder="Add Task" v-model="newTaskName">
 			</form>
-		</div>
-		
-		<div class="tasks">
-			<task v-for="task in list.get('tasks')" :key="task.id" :data="task" :list="list"></task>
 		</div>
 
 		<modal :show-modal-prop="showModal" @click="hideModal">
@@ -111,6 +111,8 @@
 				}
 
 				document.getElementById("addTaskInput").focus();
+
+				window.scrollTo(0,document.body.scrollHeight);
 			}
 		},
 
@@ -121,6 +123,10 @@
 </script>
 
 <style>
+	.list {
+		margin-bottom: 80px;
+	}
+
 	.header .header-left {
 		gap: 46px;
 	}
@@ -166,10 +172,11 @@
 	}
 
 	.add-task {
+		max-width: 900px;
 		background: var(--white);
 		padding: 9px 26px;
 		border: 1px solid var(--border-color);
-		margin-bottom: 25px;
+		margin: 25px auto 0;
 		border-radius: 10px;
 		cursor: pointer;
 	}
@@ -183,10 +190,10 @@
 		padding: 0;
 		border: none;
 		cursor: pointer;
+		background: transparent;
 	}
 
 	.add-task .add-icon {
-		margin-right: 15px;
 		width: 19px;
 	}
 
@@ -196,6 +203,7 @@
 		color: var(--text-color);
 		width: 100%;
 		font-size: 1rem;
+		margin-left: 15px;
 	}
 
 </style>
