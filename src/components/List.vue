@@ -9,10 +9,6 @@
 						@input="renameList" @blur="renaming = false">
 					<p class="error" v-text="emptyNameError"></p>
 				</div>
-				<!-- <form v-if="renaming" @submit.prevent="renameList"> -->
-					<!-- <button type="submit" class="btn btn-sm primary-btn">Save</button>
-					<button class="btn btn-sm white-btn" @click="cancelRenaming">Cancel</button> -->
-				<!-- </form> -->
 				<h2 v-else>{{ list.get('name') }}</h2>
 			</div>
 
@@ -89,12 +85,6 @@
 					this.emptyNameError = 'The list name cannot be empty';
 				}
 			},
-
-			// cancelRenaming() {
-			// 	this.renaming = false;
-			// 	this.name = this.list.get('name');
-			// 	this.emptyNameError = '';
-			// },
 			
 			deleteList() {
 				this.list.delete();
