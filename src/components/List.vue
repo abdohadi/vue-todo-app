@@ -4,12 +4,15 @@
 			<div class="header-left flex-align-center">
 				<img src="icons/back.svg" class="back-icon svg-black" title="Back to lists"
 					@click="$emit('togglePage')">
-				<form v-if="renaming" @submit.prevent="renameList">
-					<input id="editNameInput" type="text" v-model="name">
-					<button type="submit" class="btn btn-sm primary-btn">Save</button>
-					<button class="btn btn-sm white-btn" @click="cancelRenaming">Cancel</button>
+				<div class="list-name" v-if="renaming">
+					<input id="editNameInput" type="text" v-model="name" 
+						@input="renameList" @blur="renaming = false">
 					<p class="error" v-text="emptyNameError"></p>
-				</form>
+				</div>
+				<!-- <form v-if="renaming" @submit.prevent="renameList"> -->
+					<!-- <button type="submit" class="btn btn-sm primary-btn">Save</button>
+					<button class="btn btn-sm white-btn" @click="cancelRenaming">Cancel</button> -->
+				<!-- </form> -->
 				<h2 v-else>{{ list.get('name') }}</h2>
 			</div>
 
@@ -81,18 +84,17 @@
 				if (this.name != '') {
 					this.list.rename(this.name);
 					this.name = this.list.get('name');
-					this.renaming = false;
 					this.emptyNameError = '';
 				} else {
 					this.emptyNameError = 'The list name cannot be empty';
 				}
 			},
 
-			cancelRenaming() {
-				this.renaming = false;
-				this.name = this.list.get('name');
-				this.emptyNameError = '';
-			},
+			// cancelRenaming() {
+			// 	this.renaming = false;
+			// 	this.name = this.list.get('name');
+			// 	this.emptyNameError = '';
+			// },
 			
 			deleteList() {
 				this.list.delete();
@@ -128,18 +130,16 @@
 	}
 
 	.header .header-left {
+		width: 80%;
 		gap: 46px;
 	}
 
-	.header .header-left .error {
-		margin: -10px 0 10px -20px;
-	} 
-
-	.header .header-left form .btn[type="submit"]{
-		margin-right: 5px;
+	.header .header-left .list-name {
+		width: 70%;
 	}
 
-	.header .header-left input {
+	.header .header-left .list-name input {
+		max-width: 100%;
 		font-size: 2rem;
 		font-weight: bold;
 		margin: 11.5px 10px 22.5px -20px;
@@ -147,9 +147,12 @@
 		color: var(--text-color);
 	}
 
+	.header .header-left .error {
+		margin: -10px 0 10px -20px;
+	} 
+
 	.header .back-icon {
 		width: 45px;
-		margin-bottom: 5px;
 		border: 1px solid var(--border-color);
 		padding: 8px;
 		border-radius: 5px;
@@ -183,6 +186,7 @@
 
 	.add-task form {
 		width: 100%;
+		margin-bottom: 0;
 	}
 
 	.add-task form button[type="submit"] {
@@ -205,5 +209,34 @@
 		font-size: 1rem;
 		margin-left: 15px;
 	}
+
+	@media screen and (max-width: 480px) {
+		.list .header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.header .header-left {
+			width: 100%;
+		}
+
+		.header .actions {
+			margin-left: auto;
+			margin-bottom: 15px;
+		}
+
+		.header .header-left .list-name {
+			width: 80%;
+		}
+
+		.header .header-left .list-name input {
+			margin-bottom: 12.5px;
+		}
+
+		.header .header-left h2 {
+			margin-bottom: 15px;
+			padding-top: 3px;
+		}
+	}	
 
 </style>

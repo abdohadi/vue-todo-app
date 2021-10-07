@@ -94,4 +94,11 @@
 		flex-wrap: wrap;
 		gap: 40px;
 	}
+
+	@media screen and (max-width: 761px) {
+		.lists {
+			justify-content: center;
+		}
+	}
+
 </style>

@@ -257,4 +257,18 @@
 	.task .task-down-inner input[type="date"]{
 		margin-bottom: 20px;
 	}
+
+	@media screen and (max-width: 700px) {
+		.task .task-down-inner {
+			flex-direction: column;
+		}
+
+		.task .task-down-inner > div {
+			width: 100%;
+		}
+
+		.task .task-down.show {
+			max-height: 400px;
+		}
+	}
 </style>

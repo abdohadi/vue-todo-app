@@ -60,4 +60,13 @@ export default {
     font-size: 2rem;
   }
 
+  @media screen and (max-width: 761px) {
+    :root {
+      font-size: 14px;
+    }
+    #app {
+      margin: 0;
+    }
+  }
+
 </style>
