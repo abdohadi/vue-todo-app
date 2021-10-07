@@ -12,7 +12,6 @@ export default class Task {
 	update(key, val) {
 		this.data[key] = val;
 
-<<<<<<< HEAD
 		if (key == 'done') {
 			this.list.updateNumOfTasks(val);
 		} else if (key == 'priority') {
@@ -22,14 +21,11 @@ export default class Task {
 
 		this.list.updateModifiedDate();
 
-=======
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 		window.storage.updateLocalStorage();
 
 		return this.data[key];
 	}
 
-<<<<<<< HEAD
 	remove() {
 		const taskIndex = this.list.get('tasks').findIndex(task => task.id === this.data.id);
 
@@ -42,11 +38,4 @@ export default class Task {
 
 		window.storage.updateLocalStorage();	
 	}
-=======
-	// delete() {
-	// 	this.list.splice(this.getIndex(), 1);
-
-	// 	window.storage.updateLocalStorage();
-	// }
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 }

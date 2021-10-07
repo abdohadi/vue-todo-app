@@ -2,13 +2,8 @@
 	<div class="task" :class="priority">
 		<div class="task-top flex-align-center toggle-task-details" @click="toggleDetails">
 			<div class="task-left flex-align-center">
-<<<<<<< HEAD
 				<img src="/icons/row.svg" class="svg-black" width="20">
 				<input type="text" :class="{ done: done }" v-model="name" @input="update('name')">
-=======
-				<img src="/icons/row.svg" class="svg-black" width="20" title="Drage">
-				<input type="text" v-model="name" @input="update('name')">
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 			</div>
 
 			<div class="task-right">
@@ -30,11 +25,7 @@
 				<div class="task-detail-left">
 					<div class="input-group">
 						<label>Notes</label>
-<<<<<<< HEAD
-						<textarea rows="5" placeholder="Have any notes?" v-model="notes" 
-=======
 						<textarea rows="5" cols="60" placeholder="Have any notes?" v-model="notes" 
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 								@input="update('notes')">
 						</textarea>
 					</div>
@@ -49,17 +40,10 @@
 					<div class="input-group">
 						<label>Priority</label>
 						<select @change="update('priority', $event)">
-<<<<<<< HEAD
 							<option value="none" :selected="priority == 'none'">None</option>
 							<option value="high" :selected="priority == 'high'">High</option>
 							<option value="medium" :selected="priority == 'medium'">Medium</option>
 							<option value="low" :selected="priority == 'low'">Low</option>
-=======
-							<option value="" :selected="task.get('priority') == ''">None</option>
-							<option value="high" :selected="task.get('priority') == 'high'">High</option>
-							<option value="medium" :selected="task.get('priority') == 'medium'">Medium</option>
-							<option value="low" :selected="task.get('priority') == 'low'">Low</option>
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 						</select>
 					</div>
 				</div>
@@ -81,19 +65,14 @@
 				name: '',
 				notes: '',
 				dueDate: '',
-<<<<<<< HEAD
 				priority: '',
 				done: false
-=======
-				priority: ''
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 			}
 		},
 
 		methods: {
 			toggleDetails(e) {
 				if (e.target.classList.contains('toggle-task-details'))
-<<<<<<< HEAD
 					this.showDetails = !this.showDetails;
 			},
 
@@ -111,24 +90,14 @@
 						val = this[key];	
 					break;
 				}
-=======
-					this.showTaskDetails = !this.showTaskDetails;
-			},
-
-			update(key, e) {
-				let val = (key == 'priority') ? e.target.value : this[key];	
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 
 				if (key != 'name' || (key == 'name' && this[key] != '')) {
 					this[key] = this.task.update(key, val);
 				}
-<<<<<<< HEAD
 			},
 
 			remove() {
 				this.task.remove();
-=======
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 			}
 		},
 
@@ -137,10 +106,7 @@
 			this.notes = this.task.get('notes');
 			this.dueDate = this.task.get('dueDate');
 			this.priority = this.task.get('priority');
-<<<<<<< HEAD
 			this.done = this.task.get('done');
-=======
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 		}
 	}
 </script>

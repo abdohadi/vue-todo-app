@@ -29,12 +29,8 @@ export default class List {
 			"name": taskName,
 			"notes": '',
 			"dueDate": '',
-<<<<<<< HEAD
 			"priority": 'none',
 			"priorityNum": 0,
-=======
-			"priority": '',
->>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 			'done': false
 		});
 
@@ -47,7 +43,7 @@ export default class List {
 	}
 
 	arrangeTasksBasedOnPriority() {
-		this.data.tasks.sort((t1, t2) => t1.priorityNum < t2.priorityNum);console.log(this.data.tasks);
+		this.data.tasks.sort((t1, t2) => t1.priorityNum < t2.priorityNum);
 	}
 
 	getLargestTaskId() {
