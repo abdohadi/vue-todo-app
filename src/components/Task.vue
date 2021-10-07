@@ -2,7 +2,7 @@
 	<div class="task" :class="priority">
 		<div class="task-top flex-align-center toggle-task-details" @click="toggleDetails">
 			<div class="task-left flex-align-center">
-				<img src="/icons/row.svg" class="svg-black" width="20">
+				<img src="icons/row.svg" class="svg-black" width="20">
 				<input type="text" :class="{ done: done }" v-model="name" @input="update('name')">
 			</div>
 
