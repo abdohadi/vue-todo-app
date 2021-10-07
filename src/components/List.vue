@@ -208,6 +208,7 @@
 
 		.header .header-left {
 			width: 100%;
+			gap: 33px;
 		}
 
 		.header .actions {
@@ -225,7 +226,6 @@
 
 		.header .header-left h2 {
 			margin-bottom: 15px;
-			padding-top: 3px;
 		}
 	}	
 
