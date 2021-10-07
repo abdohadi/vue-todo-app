@@ -271,4 +271,14 @@
 			max-height: 400px;
 		}
 	}
+
+	@media screen and (max-width: 480px) {
+		.task {
+			padding: 9px 10px;
+		}
+
+		.task .task-left {
+			gap: 10px;
+		}
+	}
 </style>

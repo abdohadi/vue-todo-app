@@ -78,4 +78,11 @@
 		width: 100px;
 		margin-left: auto;
 	}
+
+	@media screen and (max-width: 480px) {
+		.modal form {
+			width: 90%;
+			min-width: 300px;
+		}
+	}
 </style>
