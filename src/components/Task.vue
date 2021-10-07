@@ -247,11 +247,7 @@
 	}
 
 	.task .task-down-inner .task-detail-left {
-		flex: 3;
-	}
-
-	.task .task-down-inner .task-detail-right {
-		flex: 1;
+		width: 60%;
 	}
 
 	.task .task-down-inner input[type="date"]{
@@ -269,6 +265,10 @@
 
 		.task .task-down.show {
 			max-height: 400px;
+		}
+
+		.task .task-down-inner .task-detail-left {
+			width: 100%;
 		}
 	}
 
