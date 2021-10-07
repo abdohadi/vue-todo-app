@@ -29,8 +29,12 @@ export default class List {
 			"name": taskName,
 			"notes": '',
 			"dueDate": '',
+<<<<<<< HEAD
 			"priority": 'none',
 			"priorityNum": 0,
+=======
+			"priority": '',
+>>>>>>> 03414569de5533bea10aac6373a651728fd709d0
 			'done': false
 		});
 
